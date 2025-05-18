@@ -1,11 +1,19 @@
 <html>
-    <script>
-        // 从URL获取授权码（code）并传递给父窗口
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get('code');
-        if (code) {
-            window.opener.postMessage({ type: 'oauth_callback', code }, '*');
-        }
-        window.close(); // 授权完成后自动关闭页面
-    </script>
+<script>
+// 从URL获取授权码（code）并传递给父窗口
+try {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  if (code && window.opener) {
+    window.opener.postMessage({ type: 'oauth_callback', code }, '*');
+  }
+} catch (e) {
+  console.error("Error:", e);
+} finally {
+  window.close(); // 确保页面关闭
+}
+</script>
+<body>
+  授权处理中，请稍候...
+</body>
 </html>
