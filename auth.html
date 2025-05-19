@@ -1,25 +1,14 @@
 <html>
 <script>
 try {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
+  const code = new URLSearchParams(window.location.search).get('code');
   if (code && window.opener) {
     window.opener.postMessage({ type: 'oauth_callback', code }, '*');
+    setTimeout(() => window.close(), 300); // 延迟关闭确保消息发送
   }
 } catch (e) {
   console.error("Error:", e);
-} finally {
-  // 尝试自动关闭，失败时提示用户
-  setTimeout(() => {
-    try {
-      window.close();
-    } catch {
-      document.body.innerHTML = "<h1>授权完成，请手动关闭此页面</h1>";
-    }
-  }, 1000);
 }
 </script>
-<body>
-  授权处理中，请稍候...
-</body>
+<body>授权处理中...</body>
 </html>
