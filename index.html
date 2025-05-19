@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <button onclick="startAuth()">启动授权</button>
+  <button onclick="startAuth()">授权应用</button>
   <script>
     function startAuth() {
-      // 通过弹窗打开授权页（用户点击按钮触发）
-      const authWindow = window.open(
-        "https://wangyuxin9.github.io/auth.html?code=MOCK_CODE&state=123",
+      const client_id = "你的真实client_id";
+      const redirect_uri = "https://wangyuxin9.github.io/auth.html";
+      window.open(
+        `https://open.cnipr.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`,
         "authWindow",
-        "width=580,height=680"
+        "width=600,height=800"
       );
-
-      // 监听回调消息
       window.addEventListener('message', (e) => {
         if (e.data.type === 'oauth_callback') {
           console.log("收到授权码:", e.data.code);
-          // 这里可以发送 code 到你的后端
           fetch("/api/token?code=" + e.data.code);
         }
       });
